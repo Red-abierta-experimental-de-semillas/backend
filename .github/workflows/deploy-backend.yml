@@ -26,4 +26,4 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Deploy to Firebase
-        run: firebase deploy --only functions,firestore,storage --project red-experimental-semillas --non-interactive
+        run: firebase deploy --only functions,firestore,storage --project red-experimental-semillas --non-interactive --force
