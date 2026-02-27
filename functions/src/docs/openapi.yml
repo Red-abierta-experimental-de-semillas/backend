@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: La Biblioteca del Club de la Semilla API
+  title: Red Abierta Experimental de Semillas (RAES) API
   description: |
     API para gestionar semillas, imágenes, usuarios, organizaciones y sugerencias.
 
@@ -9,9 +9,9 @@ info:
     - Producción (Firebase Cloud Functions)
   version: 1.0.0
   contact:
-    name: La Biblioteca del Club de la Semilla
-    url: https://elclubdelasemilla.org
-    email: info@elclubdelasemilla.org
+    name: Red Abierta Experimental de Semillas (RAES)
+    url: https://red-experimental-semillas.web.app
+    email: info@red-experimental-semillas.web.app
   license:
     name: GPLv3
     url: https://opensource.org/license/gpl-3-0
@@ -21,7 +21,7 @@ servers:
     description: Local - Firebase Functions emulator HTTP base URL
     variables:
       projectId:
-        default: la-biblioteca-91421
+        default: red-experimental-semillas
         description: ID del proyecto Firebase usado en local (puede variar según .env)
       region:
         default: europe-west1
@@ -31,7 +31,7 @@ servers:
     description: Producción - Endpoint directo de Cloud Functions
     variables:
       projectId:
-        default: la-biblioteca-91421
+        default: red-experimental-semillas
       region:
         default: europe-west1
 components:
