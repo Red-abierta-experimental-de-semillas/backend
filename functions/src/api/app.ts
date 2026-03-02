@@ -9,7 +9,7 @@ import { projectsRouter } from "./projects/config/ProjectsDependencyContainer";
 const app = express();
 
 // Trust proxy para que Express identifique correctamente la IP real del usuario detrás del Load Balancer de Google Cloud / Firebase
-app.set('trust proxy', 1);
+app.set("trust proxy", 1);
 
 // Middleware
 app.use(cors());
@@ -25,7 +25,7 @@ const apiLimiter = rateLimit({
     keyGenerator: (req) => {
         // x-forwarded-for puede ser un string separado por comas válido
         const forwarded = req.headers["x-forwarded-for"];
-        const forwardedIp = typeof forwarded === "string" ? forwarded.split(',')[0] : "127.0.0.1";
+        const forwardedIp = typeof forwarded === "string" ? forwarded.split(",")[0] : "127.0.0.1";
         return req.ip || forwardedIp;
     },
     // Disable IP validation for development/emulator compatibility
