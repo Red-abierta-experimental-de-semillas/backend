@@ -8,7 +8,8 @@ export class DiscussionPostEntity {
         public content: string,
         public createdAt: Date = new Date(),
         public attachments: { url: string; name: string; type: "image" | "document" }[] = [],
-        public replyToPostId?: string
+        public replyToPostId?: string,
+        public likedBy: string[] = []
     ) {
     }
 
@@ -27,7 +28,8 @@ export class DiscussionPostEntity {
             data.content,
             data.createdAt?.toDate() ?? new Date(),
             data.attachments || [],
-            data.replyToPostId
+            data.replyToPostId,
+            data.likedBy || []
         );
     }
 
@@ -40,7 +42,8 @@ export class DiscussionPostEntity {
             content: this.content,
             createdAt: this.createdAt,
             attachments: this.attachments,
-            replyToPostId: this.replyToPostId ?? null
+            replyToPostId: this.replyToPostId ?? null,
+            likedBy: this.likedBy
         };
     }
 }

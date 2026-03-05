@@ -24,6 +24,10 @@ export class ProjectsRouter {
             authenticate,
             (req, res) => this.projectController.createDiscussionPost(req, res)
         );
+        this.router.put("/:id/discussions/:postId/like",
+            authenticate,
+            (req, res) => this.projectController.toggleDiscussionLike(req, res)
+        );
 
         // Rutas que requieren autenticación
         this.router.post("/",

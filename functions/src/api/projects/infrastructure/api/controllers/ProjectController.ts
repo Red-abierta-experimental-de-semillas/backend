@@ -9,6 +9,7 @@ import { ManageMemberCommandHandler } from "../../../application/manage-member/M
 import { ListProjectMembersQueryHandler } from "../../../application/list-members/ListProjectMembersQueryHandler";
 import { CreateDiscussionPostCommandHandler } from "../../../application/discussion/CreateDiscussionPostCommandHandler";
 import { ListDiscussionPostsQueryHandler } from "../../../application/discussion/ListDiscussionPostsQueryHandler";
+import { ToggleDiscussionLikeCommand, ToggleDiscussionLikeCommandHandler } from "../../../application/discussion/ToggleDiscussionLikeCommandHandler";
 import { CreateProjectCommand } from "../../../application/create/CreateProjectCommand";
 import { GetProjectQuery } from "../../../application/get/GetProjectQuery";
 import { UpdateProjectCommand } from "../../../application/update/UpdateProjectCommand";
@@ -34,7 +35,8 @@ export class ProjectController {
         private readonly manageMemberCommandHandler: ManageMemberCommandHandler,
         private readonly listProjectMembersQueryHandler: ListProjectMembersQueryHandler,
         private readonly createDiscussionPostCommandHandler: CreateDiscussionPostCommandHandler,
-        private readonly listDiscussionPostsQueryHandler: ListDiscussionPostsQueryHandler
+        private readonly listDiscussionPostsQueryHandler: ListDiscussionPostsQueryHandler,
+        private readonly toggleDiscussionLikeCommandHandler: ToggleDiscussionLikeCommandHandler
     ) {
     }
 
@@ -320,6 +322,31 @@ export class ProjectController {
             const message = error instanceof Error ? error.message : "Unknown error";
             if (message.includes("Only accepted")) {
                 res.status(403).json({ error: message });
+            } else {
+                res.status(400).json({ error: message });
+            }
+        }
+    }
+
+    async toggleDiscussionLike(req: Request, res: Response): Promise<void> {
+        try {
+            const user = (req as AuthenticatedRequest).user;
+            if (!user) {
+                res.status(401).json({ error: "Authentication required" });
+                return;
+            }
+
+            const command = new ToggleDiscussionLikeCommand(
+                req.params.postId,
+                user.uid
+            );
+
+            const result = await this.toggleDiscussionLikeCommandHandler.handle(command);
+            res.status(200).json(result);
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "Unknown error";
+            if (message.includes("not found")) {
+                res.status(404).json({ error: message });
             } else {
                 res.status(400).json({ error: message });
             }

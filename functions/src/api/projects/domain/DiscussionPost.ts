@@ -14,7 +14,8 @@ export class DiscussionPost {
         public content: string,
         public readonly createdAt: Date = new Date(),
         public readonly attachments: DiscussionPostAttachment[] = [],
-        public readonly replyToPostId?: string
+        public readonly replyToPostId?: string,
+        public likedBy: string[] = []
     ) {
     }
 }

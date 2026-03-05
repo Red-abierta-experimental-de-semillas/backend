@@ -10,6 +10,7 @@ export interface DiscussionPostResult {
     createdAt: Date;
     attachments: { url: string; name: string; type: "image" | "document" }[];
     replyToPostId?: string;
+    likedBy: string[];
 }
 
 export class ListDiscussionPostsQueryHandler {
@@ -31,7 +32,8 @@ export class ListDiscussionPostsQueryHandler {
                 content: post.content,
                 createdAt: post.createdAt,
                 attachments: post.attachments as any,
-                replyToPostId: post.replyToPostId
+                replyToPostId: post.replyToPostId,
+                likedBy: post.likedBy || []
             }))
         };
     }

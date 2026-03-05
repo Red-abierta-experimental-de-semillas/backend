@@ -15,6 +15,7 @@ export interface DiscussionPostResult {
     createdAt: Date;
     attachments: { url: string; name: string; type: "image" | "document" }[];
     replyToPostId?: string;
+    likedBy: string[];
 }
 
 export class CreateDiscussionPostCommandHandler implements CommandHandler<CreateDiscussionPostCommand, DiscussionPostResult> {
@@ -73,7 +74,8 @@ export class CreateDiscussionPostCommandHandler implements CommandHandler<Create
             content: saved.content,
             createdAt: saved.createdAt,
             attachments: saved.attachments as any,
-            replyToPostId: saved.replyToPostId
+            replyToPostId: saved.replyToPostId,
+            likedBy: saved.likedBy || []
         };
     }
 }

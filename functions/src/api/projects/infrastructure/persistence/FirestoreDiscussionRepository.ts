@@ -27,9 +27,31 @@ export class FirestoreDiscussionRepository implements DiscussionRepository {
                 entity.content,
                 entity.createdAt,
                 entity.attachments as any,
-                entity.replyToPostId
+                entity.replyToPostId,
+                entity.likedBy
             );
         });
+    }
+
+    async findById(id: string): Promise<DiscussionPost | null> {
+        const doc = await this.collection.doc(id).get();
+        if (!doc.exists) {
+            return null;
+        }
+
+        const entity = DiscussionPostEntity.fromFirestore(doc);
+        return new DiscussionPost(
+            entity.id,
+            entity.projectId,
+            entity.userId,
+            entity.userName,
+            entity.userImage,
+            entity.content,
+            entity.createdAt,
+            entity.attachments as any,
+            entity.replyToPostId,
+            entity.likedBy
+        );
     }
 
     async save(post: DiscussionPost): Promise<DiscussionPost> {
@@ -42,7 +64,8 @@ export class FirestoreDiscussionRepository implements DiscussionRepository {
             post.content,
             post.createdAt,
             post.attachments,
-            post.replyToPostId
+            post.replyToPostId,
+            post.likedBy
         );
 
         if (entity.id) {
@@ -59,7 +82,8 @@ export class FirestoreDiscussionRepository implements DiscussionRepository {
                 post.content,
                 post.createdAt,
                 post.attachments,
-                post.replyToPostId
+                post.replyToPostId,
+                post.likedBy
             );
         }
     }

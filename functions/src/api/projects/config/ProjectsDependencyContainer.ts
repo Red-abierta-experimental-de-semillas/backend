@@ -11,6 +11,7 @@ import { ManageMemberCommandHandler } from "../application/manage-member/ManageM
 import { ListProjectMembersQueryHandler } from "../application/list-members/ListProjectMembersQueryHandler";
 import { CreateDiscussionPostCommandHandler } from "../application/discussion/CreateDiscussionPostCommandHandler";
 import { ListDiscussionPostsQueryHandler } from "../application/discussion/ListDiscussionPostsQueryHandler";
+import { ToggleDiscussionLikeCommandHandler } from "../application/discussion/ToggleDiscussionLikeCommandHandler";
 import { ProjectController } from "../infrastructure/api/controllers/ProjectController";
 import { ProjectsRouter } from "../infrastructure/api/ProjectsRouter";
 import { InMemoryCacheService } from "../../shared/infrastructure/cache/InMemoryCacheService";
@@ -34,6 +35,7 @@ const deleteProjectCommandHandler = new DeleteProjectCommandHandler(projectRepos
 const joinProjectCommandHandler = new JoinProjectCommandHandler(projectRepository, membershipRepository);
 const manageMemberCommandHandler = new ManageMemberCommandHandler(membershipRepository);
 const createDiscussionPostCommandHandler = new CreateDiscussionPostCommandHandler(discussionRepository, membershipRepository, imgService);
+const toggleDiscussionLikeCommandHandler = new ToggleDiscussionLikeCommandHandler(discussionRepository);
 
 
 // CQRS - Queries
@@ -53,7 +55,8 @@ const projectController = new ProjectController(
     manageMemberCommandHandler,
     listProjectMembersQueryHandler,
     createDiscussionPostCommandHandler,
-    listDiscussionPostsQueryHandler
+    listDiscussionPostsQueryHandler,
+    toggleDiscussionLikeCommandHandler
 );
 
 // Router
