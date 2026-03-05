@@ -24,6 +24,11 @@ export const authenticate = (
         const token = authHeader.split("Bearer ")[1];
         admin.auth().verifyIdToken(token)
             .then(async (decodedToken) => {
+                if (!decodedToken.email_verified) {
+                    res.status(403).json({ error: "Email not verified" });
+                    return;
+                }
+
                 try {
                     const userDocRef = admin.firestore().collection("users").doc(decodedToken.uid);
                     const userDoc = await userDocRef.get();
