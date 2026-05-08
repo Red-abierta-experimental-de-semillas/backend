@@ -15,6 +15,11 @@ export class FirestoreUserRepository implements UserRepository {
         return UserMapper.toDomain(userEntity);
     }
 
+    async findAll(): Promise<User[]> {
+        const snapshot = await this.db.get();
+        return snapshot.docs.map(doc => UserMapper.toDomain(UserEntity.fromFirestore(doc)));
+    }
+
     async save(user: User): Promise<User> {
         const entity = UserMapper.toEntity(user);
         await this.db.doc(user.id).set(entity, { merge: true });

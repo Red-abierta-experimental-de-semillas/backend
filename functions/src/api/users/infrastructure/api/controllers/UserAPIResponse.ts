@@ -1,3 +1,4 @@
+import type { EmailNotificationPreferences } from "../../../domain/User";
 
 export class UserAPIResponse {
     constructor(
@@ -10,6 +11,7 @@ export class UserAPIResponse {
         public readonly experience: string | null,
         public readonly interests: string | null,
         public readonly location: string | null,
-        public readonly email: string | null
+        public readonly email: string | null,
+        public readonly emailNotifications: EmailNotificationPreferences
     ) {}
 }

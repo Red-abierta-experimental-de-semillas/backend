@@ -1,3 +1,5 @@
+import type { EmailNotificationPreferences } from "../../domain/User";
+
 export class UpdateUserCommand {
     constructor(
         public readonly id: string,
@@ -9,6 +11,7 @@ export class UpdateUserCommand {
         public readonly experience?: string,
         public readonly interests?: string,
         public readonly location?: string,
-        public readonly email?: string
+        public readonly email?: string,
+        public readonly emailNotifications?: Partial<EmailNotificationPreferences>
     ) {}
 }

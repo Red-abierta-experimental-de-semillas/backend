@@ -8,13 +8,15 @@ import { CacheService } from "../../../shared/application/CacheService";
 import { ImageService } from "../../../shared/application/ImageService";
 import { PROJECTS_LIST_CACHE_KEY } from "../../config/CacheKeys";
 import { CreateProjectResult } from "./CreateProjectResult";
+import { ProjectNotificationService } from "../notifications/ProjectNotificationService";
 
 export class CreateProjectCommandHandler implements CommandHandler<CreateProjectCommand, CreateProjectResult> {
     constructor(
         private readonly repository: ProjectRepository,
         private readonly membershipRepository: ProjectMembershipRepository,
         private readonly cacheService: CacheService,
-        private readonly imageService: ImageService
+        private readonly imageService: ImageService,
+        private readonly notificationService?: ProjectNotificationService
     ) {
     }
 
@@ -54,6 +56,8 @@ export class CreateProjectCommandHandler implements CommandHandler<CreateProject
         await this.membershipRepository.save(ownerMembership);
 
         this.cacheService.invalidate(PROJECTS_LIST_CACHE_KEY);
+
+        void this.notificationService?.notifyNewProject(savedProject).catch(error => console.error("Error sending new project notifications", error));
 
         return CreateProjectResult.fromDomain(savedProject);
     }

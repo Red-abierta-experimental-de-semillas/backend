@@ -32,7 +32,8 @@ export class UserController {
                 result.experience,
                 result.interests,
                 result.location,
-                result.email
+                result.email,
+                result.emailNotifications
             ));
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "Unknown error";
@@ -55,11 +56,12 @@ export class UserController {
                 req.body.experience,
                 req.body.interests,
                 req.body.location,
-                req.body.email
+                req.body.email,
+                req.body.emailNotifications
             );
 
             const result = await this.updateUserCommandHandler.handle(command);
-            res.status(204).send(new UserAPIResponse(
+            res.status(200).send(new UserAPIResponse(
                 result.id,
                 result.name,
                 result.image,
@@ -69,7 +71,8 @@ export class UserController {
                 result.experience,
                 result.interests,
                 result.location,
-                result.email
+                result.email,
+                result.emailNotifications
             ));
         } catch (error: unknown) {
             const message = error instanceof Error ? error.message : "Unknown error";

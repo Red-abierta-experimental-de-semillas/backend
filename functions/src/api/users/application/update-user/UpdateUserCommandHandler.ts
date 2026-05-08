@@ -32,7 +32,8 @@ export class UpdateUserCommandHandler implements CommandHandler<UpdateUserComman
             offer: command.offer,
             experience: command.experience,
             interests: command.interests,
-            location: command.location
+            location: command.location,
+            emailNotifications: command.emailNotifications
         });
 
         const savedUser = await this.repository.save(user);

@@ -47,6 +47,12 @@ async function seedFirestore() {
       // Crear documento en Firestore
       const userData = {
         ...user,
+        offer: user.offer || [],
+        emailNotifications: user.emailNotifications || {
+          notifyForumPosts: true,
+          notifyNewProjects: true,
+          notifyProjectUpdates: true
+        },
         createdAt: user.createdAt
           ? new admin.firestore.Timestamp(user.createdAt._seconds, user.createdAt._nanoseconds)
           : admin.firestore.Timestamp.now()

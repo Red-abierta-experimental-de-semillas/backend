@@ -4,6 +4,7 @@ import type { DiscussionRepository } from "../../domain/repositories/DiscussionR
 import type { ProjectMembershipRepository } from "../../domain/repositories/ProjectMembershipRepository";
 import { DiscussionPost } from "../../domain/DiscussionPost";
 import type { ImageService } from "../../../shared/application/ImageService";
+import { ProjectNotificationService } from "../notifications/ProjectNotificationService";
 
 export interface DiscussionPostResult {
     id: string;
@@ -22,7 +23,8 @@ export class CreateDiscussionPostCommandHandler implements CommandHandler<Create
     constructor(
         private readonly discussionRepository: DiscussionRepository,
         private readonly membershipRepository: ProjectMembershipRepository,
-        private readonly imageService: ImageService
+        private readonly imageService: ImageService,
+        private readonly notificationService?: ProjectNotificationService
     ) {
     }
 
@@ -64,6 +66,8 @@ export class CreateDiscussionPostCommandHandler implements CommandHandler<Create
         );
 
         const saved = await this.discussionRepository.save(post);
+
+        void this.notificationService?.notifyNewDiscussionPost(command.projectId, saved).catch(error => console.error("Error sending discussion notifications", error));
 
         return {
             id: saved.id,

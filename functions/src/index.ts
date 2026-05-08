@@ -46,6 +46,12 @@ export const authOnCreate = functions.region(LOCATION)
             createdAt: new Date(),
             have: [],
             want: [],
+            offer: [],
+            emailNotifications: {
+                notifyForumPosts: true,
+                notifyNewProjects: true,
+                notifyProjectUpdates: true,
+            },
         });
     });
 
