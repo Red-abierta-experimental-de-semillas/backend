@@ -17,6 +17,9 @@ import { ProjectsRouter } from "../infrastructure/api/ProjectsRouter";
 import { InMemoryCacheService } from "../../shared/infrastructure/cache/InMemoryCacheService";
 import { FirebaseCloudStorageService } from "../../shared/infrastructure/storage/FirebaseCloudStorageService";
 import { EnvConfigService } from "../../shared/config/EnvConfigService";
+import { FirestoreUserRepository } from "../../users/infrastructure/persistence/FirestoreUserRepository";
+import { NodemailerEmailService } from "../../shared/infrastructure/email/NodemailerEmailService";
+import { ProjectNotificationService } from "../application/notifications/ProjectNotificationService";
 
 const config = new EnvConfigService();
 const publicURL = config.getRequired("APP_STORAGE_BASE_URL");
@@ -25,16 +28,19 @@ const publicURL = config.getRequired("APP_STORAGE_BASE_URL");
 const projectRepository = new FirestoreProjectRepository();
 const membershipRepository = new FirestoreProjectMembershipRepository();
 const discussionRepository = new FirestoreDiscussionRepository();
+const userRepository = new FirestoreUserRepository();
 const cacheService = new InMemoryCacheService();
 const imgService = new FirebaseCloudStorageService(publicURL);
+const emailService = new NodemailerEmailService();
+const notificationService = new ProjectNotificationService(emailService, userRepository, projectRepository, membershipRepository);
 
 // CQRS - Commands
-const createProjectCommandHandler = new CreateProjectCommandHandler(projectRepository, membershipRepository, cacheService, imgService);
-const updateProjectCommandHandler = new UpdateProjectCommandHandler(projectRepository, cacheService, imgService);
+const createProjectCommandHandler = new CreateProjectCommandHandler(projectRepository, membershipRepository, cacheService, imgService, notificationService);
+const updateProjectCommandHandler = new UpdateProjectCommandHandler(projectRepository, cacheService, imgService, notificationService);
 const deleteProjectCommandHandler = new DeleteProjectCommandHandler(projectRepository, membershipRepository, cacheService);
 const joinProjectCommandHandler = new JoinProjectCommandHandler(projectRepository, membershipRepository);
 const manageMemberCommandHandler = new ManageMemberCommandHandler(membershipRepository);
-const createDiscussionPostCommandHandler = new CreateDiscussionPostCommandHandler(discussionRepository, membershipRepository, imgService);
+const createDiscussionPostCommandHandler = new CreateDiscussionPostCommandHandler(discussionRepository, membershipRepository, imgService, notificationService);
 const toggleDiscussionLikeCommandHandler = new ToggleDiscussionLikeCommandHandler(discussionRepository);
 
 

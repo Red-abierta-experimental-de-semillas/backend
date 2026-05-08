@@ -14,7 +14,8 @@ export class UserMapper {
             entity.experience,
             entity.interests,
             entity.location,
-            entity.email
+            entity.email,
+            entity.emailNotifications
         );
     }
 
@@ -30,7 +31,8 @@ export class UserMapper {
             experience: user.experience,
             interests: user.interests,
             location: user.location,
-            email: user.email
+            email: user.email,
+            emailNotifications: user.emailNotifications
         };
     }
 }

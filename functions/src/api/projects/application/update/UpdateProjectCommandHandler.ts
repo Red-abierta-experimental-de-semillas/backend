@@ -5,12 +5,14 @@ import { CacheService } from "../../../shared/application/CacheService";
 import { ImageService } from "../../../shared/application/ImageService";
 import { PROJECTS_LIST_CACHE_KEY } from "../../config/CacheKeys";
 import { UpdateProjectResult } from "./UpdateProjectResult";
+import { ProjectNotificationService } from "../notifications/ProjectNotificationService";
 
 export class UpdateProjectCommandHandler implements CommandHandler<UpdateProjectCommand, UpdateProjectResult> {
     constructor(
         private readonly repository: ProjectRepository,
         private readonly cacheService: CacheService,
-        private readonly imageService: ImageService
+        private readonly imageService: ImageService,
+        private readonly notificationService?: ProjectNotificationService
     ) {
     }
 
@@ -44,6 +46,8 @@ export class UpdateProjectCommandHandler implements CommandHandler<UpdateProject
         const savedProject = await this.repository.save(project);
 
         this.cacheService.invalidate(PROJECTS_LIST_CACHE_KEY);
+
+        void this.notificationService?.notifyProjectUpdated(savedProject).catch(error => console.error("Error sending project update notifications", error));
 
         return UpdateProjectResult.fromDomain(savedProject);
     }
