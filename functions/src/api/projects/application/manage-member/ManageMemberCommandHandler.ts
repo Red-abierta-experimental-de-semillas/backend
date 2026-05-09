@@ -2,10 +2,12 @@ import { ManageMemberCommand } from "./ManageMemberCommand";
 import type { CommandHandler } from "../../../shared/application/CommandHandler";
 import type { ProjectMembershipRepository } from "../../domain/repositories/ProjectMembershipRepository";
 import { ManageMemberResult } from "./ManageMemberResult";
+import type { ProjectNotificationService } from "../notifications/ProjectNotificationService";
 
 export class ManageMemberCommandHandler implements CommandHandler<ManageMemberCommand, ManageMemberResult> {
     constructor(
-        private readonly membershipRepository: ProjectMembershipRepository
+        private readonly membershipRepository: ProjectMembershipRepository,
+        private readonly notificationService?: ProjectNotificationService
     ) {
     }
 
@@ -29,6 +31,7 @@ export class ManageMemberCommandHandler implements CommandHandler<ManageMemberCo
         }
 
         const savedMembership = await this.membershipRepository.save(membership);
+        await this.notificationService?.notifyMembershipDecision(savedMembership);
 
         return ManageMemberResult.fromDomain(savedMembership);
     }
