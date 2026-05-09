@@ -4,11 +4,13 @@ import type { ProjectRepository } from "../../domain/repositories/ProjectReposit
 import type { ProjectMembershipRepository } from "../../domain/repositories/ProjectMembershipRepository";
 import { ProjectMembership } from "../../domain/ProjectMembership";
 import { JoinProjectResult } from "./JoinProjectResult";
+import type { ProjectNotificationService } from "../notifications/ProjectNotificationService";
 
 export class JoinProjectCommandHandler implements CommandHandler<JoinProjectCommand, JoinProjectResult> {
     constructor(
         private readonly projectRepository: ProjectRepository,
-        private readonly membershipRepository: ProjectMembershipRepository
+        private readonly membershipRepository: ProjectMembershipRepository,
+        private readonly notificationService?: ProjectNotificationService
     ) {
     }
 
@@ -54,6 +56,7 @@ export class JoinProjectCommandHandler implements CommandHandler<JoinProjectComm
         );
 
         const savedMembership = await this.membershipRepository.save(membership);
+        await this.notificationService?.notifyMembershipRequested(savedMembership);
 
         return JoinProjectResult.fromDomain(savedMembership);
     }

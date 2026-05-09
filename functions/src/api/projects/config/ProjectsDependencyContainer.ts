@@ -38,8 +38,8 @@ const notificationService = new ProjectNotificationService(emailService, userRep
 const createProjectCommandHandler = new CreateProjectCommandHandler(projectRepository, membershipRepository, cacheService, imgService, notificationService);
 const updateProjectCommandHandler = new UpdateProjectCommandHandler(projectRepository, cacheService, imgService, notificationService);
 const deleteProjectCommandHandler = new DeleteProjectCommandHandler(projectRepository, membershipRepository, cacheService);
-const joinProjectCommandHandler = new JoinProjectCommandHandler(projectRepository, membershipRepository);
-const manageMemberCommandHandler = new ManageMemberCommandHandler(membershipRepository);
+const joinProjectCommandHandler = new JoinProjectCommandHandler(projectRepository, membershipRepository, notificationService);
+const manageMemberCommandHandler = new ManageMemberCommandHandler(membershipRepository, notificationService);
 const createDiscussionPostCommandHandler = new CreateDiscussionPostCommandHandler(discussionRepository, membershipRepository, imgService, notificationService);
 const toggleDiscussionLikeCommandHandler = new ToggleDiscussionLikeCommandHandler(discussionRepository);
 
