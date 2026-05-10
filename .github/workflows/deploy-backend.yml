@@ -22,7 +22,7 @@ jobs:
           echo "SMTP_PORT=587" >> functions/.env
           echo "SMTP_SECURE=false" >> functions/.env
           echo "SMTP_USER=${{ secrets.SMTP_USER }}" >> functions/.env
-          echo "SMTP_PASS=${{ secrets.BREVO_SMTP }}" >> functions/.env
+          echo "SMTP_PASS=${{ secrets.SMTP_PASS }}" >> functions/.env
           echo "SMTP_FROM=${{ secrets.SMTP_FROM }}" >> functions/.env
       - name: Install Firebase CLI
         run: npm install -g firebase-tools

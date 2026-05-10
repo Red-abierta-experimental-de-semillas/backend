@@ -26,7 +26,7 @@ jobs:
           SMTP_PORT: "587"
           SMTP_SECURE: "false"
           SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.BREVO_SMTP }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
           SMTP_FROM: ${{ secrets.SMTP_FROM }}
           TEST_TO: ${{ inputs.to }}
         run: |
